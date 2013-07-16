@@ -1,0 +1,3 @@
+#brs_registration:
+#  pattern:  /
+#  defaults: { _controller: BRSUserBundle:Registration:register }
