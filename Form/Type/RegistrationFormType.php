@@ -24,16 +24,97 @@ class RegistrationFormType extends BaseUser
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 		$builder
-			->add('username', null, array('label' => 'form.username', 'translation_domain' => 'FOSUserBundle'))
-			//->add('email', 'email', array('label' => 'form.email', 'translation_domain' => 'FOSUserBundle'))
-			->add('plainPassword', 'repeated', array(
-				'type' => 'password',
-				'options' => array('translation_domain' => 'FOSUserBundle'),
-				'first_options' => array('label' => 'form.password'),
-				'second_options' => array('label' => 'form.password_confirmation'),
-				'invalid_message' => 'fos_user.password.mismatch',
-			))
-		;
+        	->add(
+            	'first_name',
+            	null, 
+            	array(
+            		'label' => 'form.first_name',
+            		'translation_domain' => 'FOSUserBundle',
+            		'attr' => array(
+            			'icon' => 'icon-user',
+            			'class' => 'form_input_text valid-empty',
+            			'placeholder' => 'First Name',
+            		),
+				))
+			->add(
+				'last_name',
+				null,
+				array(
+					'label' => 'form.last_name',
+					'translation_domain' => 'FOSUserBundle',
+					'attr' => array(
+            			'icon' => 'icon-user',
+            			'class' => 'form_input_text valid-empty',
+            			'placeholder' => 'Last Name',
+            		),
+				))
+            ->add(
+            	'email',
+            	'email',
+            	array(
+            		'label' => 'form.email',
+            		'translation_domain' => 'FOSUserBundle',
+            		'attr' => array(
+            			'icon' => 'icon-email',
+            			'class' => 'form_input_text valid-email',
+            			'placeholder' => 'Email Address',
+            		),
+				))
+            ->add(
+            	'plainPassword',
+            	'password',
+            	array(
+            		'label' => 'form.password',
+            		'translation_domain' => 'FOSUserBundle',
+            		'attr' => array(
+            			'icon' => 'icon-key',
+            			'class' => 'form_input_password valid-empty',
+            			'placeholder' => 'Type your super secret password here',
+            		),
+				))
+			->add(
+            	'security_question',
+            	'choice',
+            	array(
+            		'label' => 'Security Question',
+            		'choices' => array(
+            			'star_wars' => 'Who is your favorite Star Wars character?',
+            			'ice_cream' => 'What is your favorite ice cream flavor?',
+            			'fav_color' => 'What is your favorite color?',
+					),
+            		'attr' => array(
+            			'class' => 'form_input_password valid-empty',
+            			'placeholder' => 'Type your super secret password here',
+            		),
+				))
+			->add(
+            	'security_answer',
+            	'text',
+            	array(
+            		'label' => 'Security Answer',
+            		'attr' => array(
+            			'icon' => 'icon-key',
+            			'class' => 'form_input_password valid-empty',
+            			'placeholder' => 'Type your answer here',
+            		),
+				))
+			;
     }
-
+	
+	public function setDefaultOptions(OptionsResolverInterface $resolver) {
+		
+		$resolver->setDefaults(array(
+			'data_class' => $this->class,
+			'intention'  => 'registration',
+			'validation_groups' => array('BRS_Registration'),
+		));
+		
+	}
+	
+	public function getName() {
+		
+		return 'brs_user_registration';
+		
+	}
+	
 }
