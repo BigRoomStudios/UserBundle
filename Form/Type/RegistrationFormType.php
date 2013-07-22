@@ -28,8 +28,7 @@ class RegistrationFormType extends BaseUser
             	'first_name',
             	null, 
             	array(
-            		'label' => 'form.first_name',
-            		'translation_domain' => 'FOSUserBundle',
+            		'label' => 'First Name',
             		'attr' => array(
             			'icon' => 'icon-user',
             			'class' => 'form_input_text valid-empty',
@@ -40,8 +39,7 @@ class RegistrationFormType extends BaseUser
 				'last_name',
 				null,
 				array(
-					'label' => 'form.last_name',
-					'translation_domain' => 'FOSUserBundle',
+					'label' => 'Last Name',
 					'attr' => array(
             			'icon' => 'icon-user',
             			'class' => 'form_input_text valid-empty',
@@ -52,8 +50,7 @@ class RegistrationFormType extends BaseUser
             	'email',
             	'email',
             	array(
-            		'label' => 'form.email',
-            		'translation_domain' => 'FOSUserBundle',
+            		'label' => 'Email',
             		'attr' => array(
             			'icon' => 'icon-email',
             			'class' => 'form_input_text valid-email',
@@ -64,8 +61,7 @@ class RegistrationFormType extends BaseUser
             	'plainPassword',
             	'password',
             	array(
-            		'label' => 'form.password',
-            		'translation_domain' => 'FOSUserBundle',
+            		'label' => 'Password',
             		'attr' => array(
             			'icon' => 'icon-key',
             			'class' => 'form_input_password valid-empty',
