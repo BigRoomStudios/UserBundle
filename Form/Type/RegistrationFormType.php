@@ -21,6 +21,14 @@ class RegistrationFormType extends BaseUser
 {
 	private $class;
 	
+	/**
+     * @param string $class The User class name
+     */
+    public function __construct($class)
+    {
+        $this->class = $class;
+    }
+	
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 		$builder
