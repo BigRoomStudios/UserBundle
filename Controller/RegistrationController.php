@@ -5,7 +5,9 @@ namespace BRS\UserBundle\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-use FOS\UserBundle\Controller\RegistrationController as BaseController;
+//use FOS\UserBundle\Controller\RegistrationController as BaseController;
+
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use FOS\UserBundle\FOSUserEvents;
 use FOS\UserBundle\Event\FormEvent;
@@ -22,10 +24,12 @@ use Symfony\Component\EventDispatcher\EventDispatcher,
     Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken,
     Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
+use Doctrine\DBAL\DBALException;
+
 /**
- *
+ * 
  */
-class RegistrationController extends BaseController
+class RegistrationController extends Controller
 {
 	
 	/**
@@ -33,70 +37,56 @@ class RegistrationController extends BaseController
 	 */
 	public function registerAction(Request $request) {
 		
-		$params = $_POST ? $_POST : $_GET;
-		
-		$_POST['fos_user_registration_form']['username'] = $_POST['fos_user_registration_form']['email'];
-		
+		//initialize some shit!
 		$formFactory = $this->container->get('fos_user.registration.form.factory');
 		$userManager = $this->container->get('fos_user.user_manager');
-		$dispatcher = $this->container->get('event_dispatcher');
-		
 		$user = $userManager->createUser();
 		$user->setEnabled(true);
-		
-		$dispatcher->dispatch(FOSUserEvents::REGISTRATION_INITIALIZE, new UserEvent($user, $request));
-		
 		$form = $formFactory->createForm();
 		$form->setData($user);
 		
+		//if the form method is post
 		if ('POST' === $request->getMethod()) {
+			
+			//bind the request
 		    $form->bind($request);
 			
-		    if ($form->isValid()) {
+			//if the form is valid
+		    if($form->isValid()) {
 		    	
-				//generate an error message
-				// $response = array(
-					// 'success' => false,
-					// 'message' => ,
-				// );
-				// $response = new Response(json_encode($response));
-				// $response->headers->set('Content-Type', 'application/json');
-				// return $response;
+				//save the user
+				$userManager->updateUser($user);
 				
-		        $event = new FormEvent($form, $request);
-		        $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
+				//log the new user in
+				$token = new UsernamePasswordToken($user, $user->getPassword(), "public", $user->getRoles());
+				$this->container->get("security.context")->setToken($token);
 				
-				//this is the default...so I don't know if its needed
-				//$user->addRole(static::ROLE_USER);
+				// Trigger login event
+				$event = new InteractiveLoginEvent($request, $token);
+				$this->container->get("event_dispatcher")->dispatch("security.interactive_login", $event);
 				
-		        $userManager->updateUser($user);
+				//get the form data
+				$form_data = $form->getData();
+				$first_name = $form_data->getFirstName();
 				
-		        //if (null === $response = $event->getResponse()) {
-		        //    $url = $this->container->get('router')->generate('fos_user_registration_confirmed');
-		        //    $response = new RedirectResponse($url);
-		        //}
+				//send the registration email
+				$message = \Swift_Message::newInstance()
+					->setSubject("Welcome to Hazel, $first_name")
+					->setFrom('no-reply@bigroomstudios.com')
+					->setTo($form_data->getEmail())
+					->setBody("Example Text");
 				
-				$url = ($this->container->get('kernel')->getEnvironment() == 'dev' ? 'dev.php/' : '') . 'dashboard';
+				$this->get('mailer')->send($message);
+				
+				$route = $this->get('router')->generate('hazel_property_claim');
 				
 				//redirect the user to the dashboard
 				$response = array(
 					'success' => true,
-					'redirect' => "/$url",
+					'redirect' => $route,
 				);
 				
-		        //$dispatcher->dispatch(FOSUserEvents::REGISTRATION_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
-				
-				$token = new UsernamePasswordToken($user, $user->getPassword(),
-                                       "public", $user->getRoles());
-
-			    $this->container->get("security.context")->setToken($token);
-			
-			    // Trigger login event
-			    $event = new InteractiveLoginEvent($request, $token);
-			    $this->container->get("event_dispatcher")
-			         ->dispatch("security.interactive_login", $event);
-				
-		        $response = new Response(json_encode($response));
+				$response = new Response(json_encode($response));
 				$response->headers->set('Content-Type', 'application/json');
 				
 				return $response;
@@ -104,12 +94,21 @@ class RegistrationController extends BaseController
 		    }
 			else {
 				
-				$data = $form->getData();
+				$errors = $form->getErrors();
+				
+				$error_template = $errors[0]->getMessageTemplate();
+				
+				if($error_template == 'fos_user.username.already_used') {
+					$message = 'User already exists';
+				}
+				else {
+					$message = 'Unknown error occurred';
+				}
 				
 				//generate an error message
 				$response = array(
 					'success' => false,
-					'message' => $form->getErrorsAsString() . "\n" . print_r($_POST, true),
+					'message' => $message,
 				);
 				$response = new Response(json_encode($response));
 				$response->headers->set('Content-Type', 'application/json');
@@ -119,29 +118,16 @@ class RegistrationController extends BaseController
 			
 		}
 		
-		//generate an error message
+		//something else should happen here.  They are supposed to access this via a post request...I think a refactoring of this controller will take care of it...so leaving it for now
 		$response = array(
 			'success' => false,
-			'message' => 'past post',
+			'message' => 'Incorrect method',
 		);
+		
 		$response = new Response(json_encode($response));
 		$response->headers->set('Content-Type', 'application/json');
-		return $response;
 		
-		return $this->container->get('templating')->renderResponse('FOSUserBundle:Registration:register.html.'.$this->getEngine(), array(
-		    'form' => $form->createView(),
-		));
-		
-		/*
-		//generate an error message
-		$response = array(
-			'success' => false,
-			'message' => print_r($params, true),
-		);
-		$response = new Response(json_encode($response));
-		$response->headers->set('Content-Type', 'application/json');
 		return $response;
-		*/
 		
 	}
 	
