@@ -6,6 +6,10 @@ use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
+use Hazel\PropertyBundle\Entity\Property;
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="fos_user")
@@ -70,11 +74,19 @@ class User extends BaseUser
     public $security_answer;
 	
 	/**
+     * @ORM\OneToMany(targetEntity="Hazel\PropertyBundle\Entity\Property", mappedBy="user")	 
+     */
+    public $properties;
+	
+	/**
 	 * 
 	 */
 	public function __construct() {
+		
 		parent::__construct();
-		// your own logic
+		
+		$this->properties = new ArrayCollection();
+		
 	}
 	
 	/**
@@ -298,4 +310,47 @@ class User extends BaseUser
 		return $this->security_answer;
 	}
 	
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Add properties
+     *
+     * @param \BRS\UserBundle\Entity\Property $properties
+     * @return User
+     */
+    public function addProperty(\BRS\UserBundle\Entity\Property $properties)
+    {
+        $this->properties[] = $properties;
+    
+        return $this;
+    }
+
+    /**
+     * Remove properties
+     *
+     * @param \BRS\UserBundle\Entity\Property $properties
+     */
+    public function removeProperty(\BRS\UserBundle\Entity\Property $properties)
+    {
+        $this->properties->removeElement($properties);
+    }
+
+    /**
+     * Get properties
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getProperties()
+    {
+        return $this->properties;
+    }
 }
