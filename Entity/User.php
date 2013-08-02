@@ -324,10 +324,10 @@ class User extends BaseUser
     /**
      * Add properties
      *
-     * @param \BRS\UserBundle\Entity\Property $properties
+     * @param \Hazel\PropertyBundle\Entity\Property $properties
      * @return User
      */
-    public function addProperty(\BRS\UserBundle\Entity\Property $properties)
+    public function addProperty(\Hazel\PropertyBundle\Entity\Property $properties)
     {
         $this->properties[] = $properties;
     
@@ -337,9 +337,9 @@ class User extends BaseUser
     /**
      * Remove properties
      *
-     * @param \BRS\UserBundle\Entity\Property $properties
+     * @param \Hazel\PropertyBundle\Entity\Property $properties
      */
-    public function removeProperty(\BRS\UserBundle\Entity\Property $properties)
+    public function removeProperty(\Hazel\PropertyBundle\Entity\Property $properties)
     {
         $this->properties->removeElement($properties);
     }
