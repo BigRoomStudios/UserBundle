@@ -2,11 +2,24 @@ parameters:
 #    brs_user.example.class: BRS\UserBundle\Example
 
 services:
+    
     brs_user.registration.form.type:
         class: BRS\UserBundle\Form\Type\RegistrationFormType
         arguments: [%fos_user.model.user.class%]
         tags:
             - { name: form.type, alias: brs_user_registration }
+    
+    brs_user.authentication.success_handler:
+        class: BRS\UserBundle\EventListener\LoginListener
+        arguments: ['@router']
+        tags:
+            - { name: kernel.event_listener, event: security.interactive_login, method: onLogin }
+    
+    #brs_user.implicit_login:
+    #    class: BRS\UserBundle\EventListener\ImplicitLoginListener
+    #    arguments: [@router]
+    #    tags:
+    #        - { name: kernel.event_subscriber }
     
     #my.facebook.user:
     #    class: BRS\UserBundle\Security\User\Provider\FacebookProvider
