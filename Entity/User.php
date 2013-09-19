@@ -8,11 +8,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Hazel\PropertyBundle\Entity\Property;
-
 /**
  * @ORM\Entity
- * @ORM\Table(name="fos_user")
+ * @ORM\Table(name="brs_users")
  */
 class User extends BaseUser
 {
@@ -72,11 +70,6 @@ class User extends BaseUser
      * @ORM\Column(name="security_answer", type="text", nullable=TRUE)
      */
     public $security_answer;
-	
-	/**
-     * @ORM\OneToMany(targetEntity="Hazel\PropertyBundle\Entity\Property", mappedBy="user")	 
-     */
-    public $properties;
 	
 	/**
 	 * 
@@ -311,46 +304,14 @@ class User extends BaseUser
 	}
 	
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+	/**
+	 * Get id
+	 *
+	 * @return integer 
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
 
-    /**
-     * Add properties
-     *
-     * @param \Hazel\PropertyBundle\Entity\Property $properties
-     * @return User
-     */
-    public function addProperty(\Hazel\PropertyBundle\Entity\Property $properties)
-    {
-        $this->properties[] = $properties;
-    
-        return $this;
-    }
-
-    /**
-     * Remove properties
-     *
-     * @param \Hazel\PropertyBundle\Entity\Property $properties
-     */
-    public function removeProperty(\Hazel\PropertyBundle\Entity\Property $properties)
-    {
-        $this->properties->removeElement($properties);
-    }
-
-    /**
-     * Get properties
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getProperties()
-    {
-        return $this->properties;
-    }
 }

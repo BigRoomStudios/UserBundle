@@ -21,12 +21,12 @@ class LoginListener
 	 */
 	public function onLogin(InteractiveLoginEvent $event) {
 		
-		$request = $event->getRequest();
+		/*$request = $event->getRequest();
 		
 		$route = $this->router->generate('hazel_property_edit');
 		$route = str_replace('dev.php/', '', $route);
 		
-		$request->request->set('_target_path', $route);
+		$request->request->set('_target_path', $route);*/
 		
 	}
 }

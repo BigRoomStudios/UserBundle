@@ -78,7 +78,7 @@ class RegistrationController extends Controller
 				
 				$this->get('mailer')->send($message);
 				
-				$route = $this->get('router')->generate('property_claim');
+				//$route = $this->get('router')->generate('property_claim');
 				
 				//redirect the user to the dashboard
 				$response = array(
