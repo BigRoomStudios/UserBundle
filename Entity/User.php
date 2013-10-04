@@ -11,6 +11,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * @ORM\Entity
  * @ORM\Table(name="brs_users")
+ * @ORM\AttributeOverrides({
+ *      @ORM\AttributeOverride(name="email", column=@ORM\Column(type="string", name="email", length=255, nullable=true)),
+ *      @ORM\AttributeOverride(name="emailCanonical", column=@ORM\Column(type="string", name="email_canonical", length=255, nullable=true)),
+ *      @ORM\AttributeOverride(name="username", column=@ORM\Column(type="string", name="username", length=255, nullable=true, unique=true)),
+ *      @ORM\AttributeOverride(name="usernameCanonical", column=@ORM\Column(type="string", name="username_canonical", length=255, nullable=true, unique=true)),
+ *      @ORM\AttributeOverride(name="password", column=@ORM\Column(type="string", name="password", length=255, nullable=true))
+ * })
  */
 class User extends BaseUser
 {
@@ -27,6 +34,13 @@ class User extends BaseUser
      * @ORM\Column(name="facebookId", type="string", length=255, nullable=TRUE)
      */
     protected $facebookId;
+	
+	/**
+     * @var string
+     *
+     * @ORM\Column(name="foursquareId", type="string", length=255, nullable=TRUE)
+     */
+    protected $foursquareId;
 	
     /**
      * @var string $first_name
@@ -72,6 +86,34 @@ class User extends BaseUser
     public $security_answer;
 	
 	/**
+     * @var string $address
+     *
+     * @ORM\Column(name="address", type="string", length=255, nullable=TRUE)
+     */
+    public $address;
+	
+	/**
+     * @var string $city
+     *
+     * @ORM\Column(name="city", type="string", length=255, nullable=TRUE)
+     */
+    public $city;
+	
+	/**
+     * @var string $state
+     *
+     * @ORM\Column(name="state", type="string", length=255, nullable=TRUE)
+     */
+    public $state;
+    
+    /**
+     * @var string $phone
+     *
+     * @ORM\Column(name="phone", type="string", length=255, nullable=TRUE)
+     */
+    public $phone;
+	
+	/**
 	 * 
 	 */
 	public function __construct() {
@@ -95,6 +137,11 @@ class User extends BaseUser
         	$this->date_updated,
         	$this->security_question,
         	$this->security_answer,
+        	/*$this->foursquareId,
+        	$this->address,
+        	$this->city,
+        	$this->state,
+        	$this->phone,*/
         	parent::serialize(),
 		));
 		
@@ -113,6 +160,11 @@ class User extends BaseUser
         	$this->date_updated,
         	$this->security_question,
         	$this->security_answer,
+        	/*$this->foursquareId,
+        	$this->address,
+        	$this->city,
+        	$this->state,
+        	$this->phone,*/
         	$parentData
 		) = unserialize($data);
 		
@@ -313,5 +365,100 @@ class User extends BaseUser
 	{
 		return $this->id;
 	}
-
+	
+	/**
+	 * @param string $foursquareId
+	 * @return void
+	 */
+	public function setFoursquareId($foursquareId) {
+		$this->foursquareId = $foursquareId;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getFoursquareId() {
+		return $this->foursquareId;
+	}
+	
+	/**
+	 * Get address
+	 *
+	 * @return string 
+	 */
+	public function getAddress()
+	{
+		return $this->address;
+	}
+	
+	/**
+	 * Set last_name
+	 *
+	 * @param string $address
+	 */
+	public function setAddress($address)
+	{
+		$this->address = $address;
+	}
+	
+	/**
+	 * Get city
+	 *
+	 * @return string 
+	 */
+	public function getCity()
+	{
+		return $this->city;
+	}
+	
+	/**
+	 * Set city
+	 *
+	 * @param string $city
+	 */
+	public function setCity($city)
+	{
+		$this->city = $city;
+	}
+	
+	/**
+	 * Get state
+	 *
+	 * @return string 
+	 */
+	public function getState()
+	{
+		return $this->state;
+	}
+	
+	/**
+	 * Set state
+	 *
+	 * @param string $state
+	 */
+	public function setState($state)
+	{
+		$this->state = $state;
+	}
+	
+	/**
+	 * Get phone
+	 *
+	 * @return string 
+	 */
+	public function getPhone()
+	{
+		return $this->phone;
+	}
+	
+	/**
+	 * Set phone
+	 *
+	 * @param string $phone
+	 */
+	public function setPhone($phone)
+	{
+		$this->phone = $phone;
+	}
+	
 }
