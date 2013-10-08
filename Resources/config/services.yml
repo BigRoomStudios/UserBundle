@@ -3,11 +3,11 @@ parameters:
 
 services:
     
-    brs_user.registration.form.type:
-        class: BRS\UserBundle\Form\Type\RegistrationFormType
-        arguments: [%fos_user.model.user.class%]
-        tags:
-            - { name: form.type, alias: brs_user_registration }
+    #brs_user.registration.form.type:
+    #    class: BRS\UserBundle\Form\Type\RegistrationFormType
+    #    arguments: [%fos_user.model.user.class%]
+    #    tags:
+    #        - { name: form.type, alias: brs_user_registration }
     
     brs_user.authentication.success_handler:
         class: BRS\UserBundle\EventListener\LoginListener

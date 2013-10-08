@@ -1,3 +1,7 @@
 #brs_registration:
 #  pattern:  /
 #  defaults: { _controller: BRSUserBundle:Registration:register }
+
+brs_user_login_ajax:
+    pattern: /login.json
+    defaults: { _controller: BRSUserBundle:Registration:ajaxRegister }
