@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Hazel\PropertyBundle\Entity\Property;
+use App\PropertyBundle\Entity\Property;
 
 /**
  * @ORM\Entity
@@ -74,7 +74,7 @@ class User extends BaseUser
     public $security_answer;
 	
 	/**
-     * @ORM\OneToMany(targetEntity="Hazel\PropertyBundle\Entity\Property", mappedBy="user")	 
+     * @ORM\OneToMany(targetEntity="App\PropertyBundle\Entity\Property", mappedBy="user")	 
      */
     public $properties;
 	
@@ -324,10 +324,10 @@ class User extends BaseUser
     /**
      * Add properties
      *
-     * @param \Hazel\PropertyBundle\Entity\Property $properties
+     * @param \App\PropertyBundle\Entity\Property $properties
      * @return User
      */
-    public function addProperty(\Hazel\PropertyBundle\Entity\Property $properties)
+    public function addProperty(\App\PropertyBundle\Entity\Property $properties)
     {
         $this->properties[] = $properties;
     
@@ -337,9 +337,9 @@ class User extends BaseUser
     /**
      * Remove properties
      *
-     * @param \Hazel\PropertyBundle\Entity\Property $properties
+     * @param \App\PropertyBundle\Entity\Property $properties
      */
-    public function removeProperty(\Hazel\PropertyBundle\Entity\Property $properties)
+    public function removeProperty(\App\PropertyBundle\Entity\Property $properties)
     {
         $this->properties->removeElement($properties);
     }
