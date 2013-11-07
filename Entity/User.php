@@ -29,6 +29,19 @@ class User extends BaseUser
 	protected $id;
 	
 	/**
+     * @var integer
+     * 
+     * @ORM\Column(name="business_id", type="integer", nullable=TRUE)
+     */
+    private $business_id;
+	
+	/**
+	 * @ORM\ManyToOne(targetEntity="App\QuestionnaireBundle\Entity\Business")
+     * @ORM\JoinColumn(name="business_id", referencedColumnName="id")
+	 */
+	private $business;
+	
+	/**
      * @var string
      *
      * @ORM\Column(name="facebookId", type="string", length=255, nullable=TRUE)
@@ -131,6 +144,7 @@ class User extends BaseUser
     	
         return serialize(array(
         	$this->facebookId,
+        	$this->business_id,
         	$this->first_name,
         	$this->last_name,
         	$this->date_added,
@@ -154,6 +168,7 @@ class User extends BaseUser
     	
         list(
         	$this->facebookId,
+        	$this->business_id,
         	$this->first_name,
         	$this->last_name,
         	$this->date_added,
@@ -170,6 +185,32 @@ class User extends BaseUser
 		
         parent::unserialize($parentData);
 		
+    }
+	
+	/**
+     * Set the business
+     *
+     * @param \App\QuestionnaireBundle\Entity\Business business - business the questionnaire is being conducted on
+     */
+    public function setBusiness(\App\QuestionnaireBundle\Entity\Business $business) {
+    	
+		//set the business id
+        $this->business_id = $business->getId();
+		
+		//set the business
+        $this->business = $business;
+    	
+    	return $this;
+		
+    }
+	
+	/**
+     * Get the business
+     *
+     * @return \App\QuestionnaireBundle\Entity\Business
+     */
+    public function getBusiness() {
+        return $this->business;
     }
 	
 	/**
