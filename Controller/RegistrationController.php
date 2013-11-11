@@ -69,12 +69,14 @@ class RegistrationController extends Controller
 				$form_data = $form->getData();
 				$first_name = $form_data->getFirstName();
 				
+				$message = "Dear $first_name,\nCongratulations, your haZel account is now activated.\n\nYou are a first comer, a mover and shaker, a ground breaker. Dive into the haZel home page and show your home some love and tenderness. haZel gives back. We are so confident haZel will improve your peace of mind that we offer a lifetime money back guarantee.\n\nStep on up to your new home in the cloud. Oh, and make yourself at home.\n\nWelcome to haZel!!!";
+				
 				//send the registration email
 				$message = \Swift_Message::newInstance()
 					->setSubject("Welcome to Hazel, $first_name")
-					->setFrom('no-reply@bigroomstudios.com')
+					->setFrom('support@hazel-home.com')
 					->setTo($form_data->getEmail())
-					->setBody("Example Text");
+					->setBody($message);
 				
 				$this->get('mailer')->send($message);
 				
