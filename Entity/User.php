@@ -127,13 +127,18 @@ class User extends BaseUser
     public $phone;
 	
 	/**
+     * @ORM\OneToMany(targetEntity="App\QuestionnaireBundle\Entity\Questionnaire", mappedBy="user")	 
+     */
+    public $questionnaires;
+	
+	/**
 	 * 
 	 */
 	public function __construct() {
 		
 		parent::__construct();
 		
-		$this->properties = new ArrayCollection();
+		$this->questionnaires = new ArrayCollection();
 		
 	}
 	
@@ -211,6 +216,15 @@ class User extends BaseUser
      */
     public function getBusiness() {
         return $this->business;
+    }
+	
+	/**
+     * Get the business id
+     *
+     * @return business_id
+     */
+    public function getBusinessId() {
+        return $this->business_id;
     }
 	
 	/**
@@ -501,5 +515,38 @@ class User extends BaseUser
 	{
 		$this->phone = $phone;
 	}
+	
+    /**
+     * Add questionnaire
+     *
+     * @param \App\QuestionnaireBundle\Entity\Questionnaire $questionnaires
+     * @return User
+     */
+    public function addQuestionnaire(\App\QuestionnaireBundle\Entity\Questionnaire $questionnaire) {
+    	
+	    $this->questionnaires[] = $questionnaire;
+    
+        return $this;
+    }
+
+    /**
+     * Remove questionnaire
+     *
+     * @param \App\QuestionnaireBundle\Entity\Questionnaire $questionnaire
+     */
+    public function removeQuestionnaire(\App\QuestionnaireBundle\Entity\Questionnaire $questionnaire)
+    {
+        $this->questionnaires->removeElement($questionnaire);
+    }
+
+    /**
+     * Get questionnaires
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getQuestionnaires()
+    {
+        return $this->questionnaires;
+    }
 	
 }
