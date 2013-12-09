@@ -133,7 +133,7 @@ class RegistrationController extends Controller
 	
 	/**
 	 * 
-	 
+	 */
 	public function registerAction(Request $request) {
 		
 		//initialize some shit!
@@ -228,6 +228,6 @@ class RegistrationController extends Controller
 		
 		return $response;
 		
-	}*/
+	}
 	
 }
