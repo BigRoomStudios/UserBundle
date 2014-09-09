@@ -132,6 +132,13 @@ class User extends BaseUser
     public $questionnaires;
 	
 	/**
+     * @var string $stripeId
+     *
+     * @ORM\Column(name="stripe_id", type="string", length=255, nullable=TRUE)
+     */
+	private $stripeId;
+	
+	/**
 	 * 
 	 */
 	public function __construct() {
@@ -156,6 +163,7 @@ class User extends BaseUser
         	$this->date_updated,
         	$this->security_question,
         	$this->security_answer,
+        	$this->stripeId,
         	/*$this->foursquareId,
         	$this->address,
         	$this->city,
@@ -180,6 +188,7 @@ class User extends BaseUser
         	$this->date_updated,
         	$this->security_question,
         	$this->security_answer,
+        	$this->stripdId,
         	/*$this->foursquareId,
         	$this->address,
         	$this->city,
@@ -191,6 +200,18 @@ class User extends BaseUser
         parent::unserialize($parentData);
 		
     }
+	
+	public function getStripeId() {
+		return $this->stripeId;
+	}
+	
+	public function setStripeId($stripeId) {
+		
+		$this->stripeId = $stripeId;
+		
+		return $this;
+		
+	}
 	
 	/**
      * Set the business
